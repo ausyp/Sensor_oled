@@ -1,0 +1,18 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-build
+
+WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get install -y build-essential 
+
+RUN pip install --upgrade Pillow
+
+RUN pip3 install RPI.GPIO adafruit-blinka adafruit-circuitpython-ssd1306 adafruit-io pillow
+
+RUN pip install smbus w1thermsensor enviroplus RPi.GPIO
+
+WORKDIR /usr/src/app
+COPY ./scripts ./scripts
+COPY ./entry.sh /usr/src/app/
+RUN chmod +x /usr/src/app/entry.sh
+
+CMD ["./entry.sh"]

@@ -1,0 +1,16 @@
+FROM balenalib/raspberrypi3-python:3-build
+
+WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get install -y build-essential python3-pil
+
+RUN pip3 install RPI.GPIO adafruit-blinka adafruit-circuitpython-ssd1306
+
+RUN pip install smbus w1thermsensor enviroplus RPi.GPIO
+
+WORKDIR /usr/src/app
+COPY ./scripts ./scripts
+COPY ./entry.sh /usr/src/app/
+RUN chmod +x /usr/src/app/entry.sh
+
+CMD ["./entry.sh"]
