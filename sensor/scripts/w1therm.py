@@ -78,15 +78,22 @@ font = ImageFont.load_default()
 
 # Draw Some Text
 
-text = "TEMP: 5.5 " 
-(font_width, font_height) = font.getsize(text)
-draw.text(
-    (oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),
-    text,
-    font=font,
-    fill=255,
-)
+sensor_id = os.environ['BALENASENSE_1WIRE_SENSOR_ID']
+sensor = W1THERM(sensor_id)
 
-# Display image
-oled.image(image)
-oled.show()
+while True:
+    current_temperature = sensor.get_temperature()
+
+    text = "TEMP: " + current_temperature
+    (font_width, font_height) = font.getsize(text)
+    draw.text(
+        (oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),
+        text,
+        font=font,
+        fill=255,
+    )
+
+    # Display image
+    oled.image(image)
+    oled.show()
+    time.sleep(5) # sleep for 5 sec    
